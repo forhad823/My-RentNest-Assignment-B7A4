@@ -4,6 +4,23 @@ import { authService } from "./auth.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
+const registerUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const payload = req.body;
+
+    const user = await authService.registerUserIntoDB(payload);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: "User Registered Successfully",
+      data: {
+        user,
+      },
+    });
+  },
+);
+
 const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -58,8 +75,25 @@ const refreshToken = catchAsync(
     });
   },
 );
+/* ***** get current logged-in user ****** */
+const getCurrentUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const currentUser = await authService.getCurrentUserFromDB(
+      req.user?.id as string /*verifiedToken.id*/,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "current user fetched successfully",
+      data: { currentUser },
+    });
+  },
+);
 
 export const authController = {
   loginUser,
   refreshToken,
+  registerUser,
+  getCurrentUser,
 };

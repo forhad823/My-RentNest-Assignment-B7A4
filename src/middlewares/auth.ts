@@ -6,20 +6,6 @@ import { prisma } from "../lib/prisma";
 import { catchAsync } from "../utils/catchAsync";
 import { jwtUtils } from "../utils/jwt";
 
-// global type augmentation (or declaration merging)
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        email: string;
-        name: string;
-        id: string;
-        role: Role;
-      };
-    }
-  }
-}
-
 // auth(Role.ADMIN, Role.USER, Role.Author)
 // auth() => ...requiredRoles => [Role.ADMIN, Role.USER, Role.AUTHOR]
 export const auth = (...requiredRoles: Role[]) => {
@@ -61,7 +47,7 @@ export const auth = (...requiredRoles: Role[]) => {
     }
 
     if (user.activeStatus === "BLOCKED") {
-      throw new Error("Your account has been blocked. Please contact support");
+      throw new Error("Your account has been banned/blocked. Please contact support");
     }
     req.user = { email, name, id, role };
 
