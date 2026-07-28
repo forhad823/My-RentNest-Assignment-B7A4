@@ -7,6 +7,7 @@ import { authRoutes } from "./modules/auth/auth.route";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { stripe } from "./lib/stripe";
+import { landlordRoutes } from "./modules/landlord/landlord.route";
 
 const app: Application = express();
 
@@ -30,6 +31,7 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/landlord", landlordRoutes);
 
 // implementing not found route (middleware)
 app.use(notFound);
