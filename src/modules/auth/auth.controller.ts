@@ -7,7 +7,7 @@ import httpStatus from "http-status";
 const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
-
+    console.log(req.body);
     const user = await authService.registerUserIntoDB(payload);
 
     sendResponse(res, {

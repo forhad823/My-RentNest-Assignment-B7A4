@@ -7,7 +7,7 @@ import { jwtUtils } from "../../utils/jwt";
 
 /* ***** Register user ***** */
 const registerUserIntoDB = async (payload: registerUserPayload) => {
-  const { name, email, password } = payload;
+  const { name, email, password, role } = payload;
 
   const isUserExist = await prisma.user.findUnique({
     where: { email },
@@ -28,6 +28,7 @@ const registerUserIntoDB = async (payload: registerUserPayload) => {
       name,
       email,
       password: hashedPassword,
+      role,
     },
   });
 
@@ -38,7 +39,7 @@ const registerUserIntoDB = async (payload: registerUserPayload) => {
       email: createdUser.email || email,
     },
     omit: {
-      password: true, // for not showing password in response
+      password: true, 
     },
   });
 
@@ -47,13 +48,6 @@ const registerUserIntoDB = async (payload: registerUserPayload) => {
 
 const loginUserByCred = async (payload: ILoginUser) => {
   const { email, password } = payload;
-  // const user = await prisma.user.findUnique({
-  //   where: { email },
-  // })
-
-  // if (!user) {
-  //   throw new Error('User not found');
-  // }
 
   const user = await prisma.user.findUniqueOrThrow({
     where: { email },
@@ -75,10 +69,6 @@ const loginUserByCred = async (payload: ILoginUser) => {
     email: user.email,
     role: user.role,
   };
-
-  // const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret, {
-  //   expiresIn: config.jwt_access_expires_in,
-  // } as SignOptions);
 
   const accessToken = jwtUtils.createToken(
     jwtPayload,
