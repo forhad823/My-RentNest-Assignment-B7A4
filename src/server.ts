@@ -20,11 +20,3 @@ async function main() {
 }
 
 main();
-
-/* 
-process.exit() immediately terminates the current Node.js process.
-
-process.exit(0) → Exit successfully.
-process.exit(1) → Exit because of an error.
-It is useful when a critical startup operation (such as connecting to a database or initializing required services) fails.
-*/
