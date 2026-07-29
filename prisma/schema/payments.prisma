@@ -1,16 +1,23 @@
 model Payment {
-    id            String        @id @default(uuid())
-    amount        Float
-    status        PaymentStatus @default(PENDING)
-    transectionId String?       @unique @db.VarChar(255) // Stripe Payment Intent ID (starts with pi_). Crucial for webhooks/refunds.
-    paidAt        DateTime?
-    createdAt     DateTime      @default(now())
-    updatedAt     DateTime      @updatedAt
+  id       String        @id @default(uuid())
+  amount   Float // Total amount paid
+  currency String        @default("usd")
+  status   PaymentStatus @default(PENDING)
 
-    rentalRequestId String
-    rentalRequest   RentalRequest @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
+  stripeSessionId       String? @unique @db.VarChar(255)
+  stripePaymentIntentId String? @unique @db.VarChar(255)
+  stripeReceiptUrl      String? @db.Text
+  paymentMethod         String? @db.VarChar(50)
 
-    @@index([rentalRequestId])
-    @@index([transectionId])
-    @@map("payments")
+  paidAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  rentalRequestId String
+  rentalRequest   RentalRequest @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
+
+  @@index([rentalRequestId])
+  @@index([stripeSessionId])
+  @@index([stripePaymentIntentId])
+  @@map("payments")
 }
