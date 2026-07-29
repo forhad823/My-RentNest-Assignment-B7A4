@@ -9,6 +9,8 @@ import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { landlordRoutes } from "./modules/landlord/landlord.route";
 import { rentalsRoutes } from "./modules/rentalreq/rentalreq.route";
 import { paymentRoutes } from "./modules/payment/payment.route";
+import { reviewRoutes } from "./modules/review/review.route";
+import { adminRoutes } from "./modules/admin/admin.route";
 
 const app: Application = express();
 
@@ -40,6 +42,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/landlord", landlordRoutes);
 app.use("/api/rentals", rentalsRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/reviews", reviewRoutes)
+app.use("/api/admin", adminRoutes);
 
 // ------- Not Found & Global Error Handler --------------------------------
 app.use(notFound);
