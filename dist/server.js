@@ -1232,6 +1232,199 @@ router4.get(
 );
 var paymentRoutes = router4;
 
+// src/modules/review/review.route.ts
+import { Router as Router5 } from "express";
+
+// src/modules/review/review.controller.ts
+import httpStatus6 from "http-status";
+
+// src/modules/review/review.service.ts
+var submitReview = async (tenantId, payload) => {
+  const propertyId = payload.propertyId;
+  const rentalReq = await prisma.rentalRequest.findFirst({
+    where: {
+      tenantId,
+      propertyId,
+      status: "COMPLETED"
+    }
+  });
+  console.log("rentalReq from submitReview", rentalReq);
+  if (!rentalReq) {
+    throw new Error(
+      "You can not submit a review for the property. because either you didn't pay your rent or you are not the tenant of the property"
+    );
+  }
+  const result = await prisma.review.create({
+    data: {
+      ...payload,
+      tenantId
+    }
+  });
+  return result;
+};
+var reviewService = {
+  submitReview
+};
+
+// src/modules/review/review.controller.ts
+var submitReview2 = catchAsync(async (req, res) => {
+  const tenantId = req.user?.id;
+  const result = await reviewService.submitReview(tenantId, req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus6.CREATED,
+    message: "Review Submitted Successfully",
+    data: result
+  });
+});
+var reviewsController = {
+  submitReview: submitReview2
+};
+
+// src/modules/review/review.route.ts
+var router5 = Router5();
+router5.post("/", auth(Role.TENANT), reviewsController.submitReview);
+var reviewRoutes = router5;
+
+// src/modules/admin/admin.route.ts
+import { Router as Router6 } from "express";
+
+// src/modules/admin/admin.controller.ts
+import httpStatus7 from "http-status";
+
+// src/modules/admin/admin.service.ts
+var getAllUsers = async () => {
+  const result = await prisma.user.findMany({
+    where: {
+      NOT: {
+        role: "ADMIN"
+      }
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      activeStatus: true
+    },
+    orderBy: {
+      role: "desc"
+    }
+  });
+  return result;
+};
+var updateUserStatus = async (userId, payload) => {
+  await prisma.user.findFirstOrThrow({
+    where: {
+      id: userId
+    }
+  });
+  const result = await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: payload,
+    omit: {
+      password: true
+    }
+  });
+  return result;
+};
+var getAllProperties = async () => {
+  const result = await prisma.property.findMany({
+    orderBy: {
+      categoryId: "desc"
+    }
+  });
+  return result;
+};
+var getAllRentalReq = async () => {
+  const result = await prisma.rentalRequest.findMany({
+    include: {
+      property: {
+        include: {
+          landlord: {
+            select: {
+              name: true
+            }
+          }
+        }
+      },
+      tenant: {
+        select: {
+          name: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  });
+  return result;
+};
+var adminServices = {
+  getAllUsers,
+  updateUserStatus,
+  getAllProperties,
+  getAllRentalReq
+};
+
+// src/modules/admin/admin.controller.ts
+var getAllUsers2 = catchAsync(async (req, res) => {
+  const result = await adminServices.getAllUsers();
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus7.OK,
+    message: "All Users Data Retrieved Successfully",
+    data: result
+  });
+});
+var updateUserStatus2 = catchAsync(async (req, res) => {
+  const userId = req.params.id;
+  if (!userId) {
+    throw new Error("User's Id Required in Params");
+  }
+  const result = await adminServices.updateUserStatus(userId, req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus7.OK,
+    message: "userStatus Updated Successfully",
+    data: result
+  });
+});
+var getAllProperties2 = catchAsync(async (req, res) => {
+  const result = await adminServices.getAllProperties();
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus7.OK,
+    message: "All Property Data Retrieved Successfully",
+    data: result
+  });
+});
+var getAllRentalReq2 = catchAsync(async (req, res) => {
+  const result = await adminServices.getAllRentalReq();
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus7.OK,
+    message: "All Rental Requests Retrieved Successfully",
+    data: result
+  });
+});
+var adminController = {
+  getAllUsers: getAllUsers2,
+  updateUserStatus: updateUserStatus2,
+  getAllProperties: getAllProperties2,
+  getAllRentalReq: getAllRentalReq2
+};
+
+// src/modules/admin/admin.route.ts
+var router6 = Router6();
+router6.get("/users", auth(Role.ADMIN), adminController.getAllUsers);
+router6.patch("/users/:id", auth(Role.ADMIN), adminController.updateUserStatus);
+router6.get("/properties", auth(Role.ADMIN), adminController.getAllProperties);
+router6.get("/rentals", auth(Role.ADMIN), adminController.getAllRentalReq);
+var adminRoutes = router6;
+
 // src/app.ts
 var app = express();
 app.use(
@@ -1251,6 +1444,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/landlord", landlordRoutes);
 app.use("/api/rentals", rentalsRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/admin", adminRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 var app_default = app;
