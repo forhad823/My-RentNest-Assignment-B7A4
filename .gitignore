@@ -1,9 +1,9 @@
 node_modules
-dist
 generated
 .env
 /generated/prisma
 agy
 my-rentnest-project-requirement.md
 plan.md
-note.txtnp
+note.txt
+.vercel
