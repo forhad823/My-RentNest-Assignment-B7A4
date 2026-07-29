@@ -64,6 +64,43 @@ const deleteProperty = catchAsync(
   },
 );
 
+// get all request for the Landlord's all property
+const getRentRequestOfLandlordProperties = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const landlordId = req.user?.id as string;
+    const result =
+      await landlordService.getRentRequestOfLandlordProperties(landlordId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message:
+        "all rental Requests for landlord's all property retrieved Successfully",
+      data: result,
+    });
+  },
+);
+
+// update request status
+const updateRentalReqStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const rentalReqId = req.params.rentalReqId as string;
+    const landlord = req.user?.id as string;
+
+    const result = await landlordService.updateRentalReqStatus(
+      rentalReqId,
+      landlord,
+      req.body,
+    );
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental Request Updated Successfully",
+      data: result,
+    });
+  },
+);
+
 /* 
 const updatePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -117,4 +154,6 @@ export const landlordController = {
   listNewProperty,
   updateProperty,
   deleteProperty,
+  getRentRequestOfLandlordProperties,
+  updateRentalReqStatus,
 };

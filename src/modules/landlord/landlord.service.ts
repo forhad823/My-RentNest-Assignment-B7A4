@@ -1,5 +1,9 @@
 import { prisma } from "../../lib/prisma";
-import { IPropertyPayload, IUpdatePropertyPayload } from "./landlord.interface";
+import {
+  IPropertyPayload,
+  IUpdatePropertyPayload,
+  IUpdateRentalReqStatus,
+} from "./landlord.interface";
 
 const listNewProperty = async (
   landlordId: string,
@@ -63,9 +67,57 @@ const deletePropertyFromDB = async (propertyId: string, landlordId: string) => {
   });
 };
 
+const getRentRequestOfLandlordProperties = async (landlordId: string) => {
+  const result = await prisma.rentalRequest.findMany({
+    where: {
+      property: {
+        landlordId: landlordId,
+      },
+    },
+  });
+  return result;
+};
+
+const updateRentalReqStatus = async (
+  rentalReqId: string,
+  landlordId: string,
+  payload: IUpdateRentalReqStatus,
+) => {
+  // first i need propertyId to check
+  const rentRequest = await prisma.rentalRequest.findUniqueOrThrow({
+    where: {
+      id: rentalReqId,
+    },
+    select: {
+      property: {
+        select: {
+          landlordId: true,
+        },
+      },
+    },
+  });
+
+  console.log(landlordId, rentRequest.property.landlordId);
+  if (landlordId !== rentRequest.property.landlordId) {
+    throw new Error(
+      "You are not the owner of the property associated with this rental request.",
+    );
+  }
+
+  const result = await prisma.rentalRequest.update({
+    where: {
+      id: rentalReqId,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
 export const landlordService = {
   listNewProperty,
   updatePropertyIntoDB,
   deletePropertyFromDB,
+  getRentRequestOfLandlordProperties,
+  updateRentalReqStatus,
 };
-

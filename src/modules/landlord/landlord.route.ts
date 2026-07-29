@@ -26,15 +26,25 @@ router.delete(
   landlordController.deleteProperty,
 );
 
+// Gets all rental requests sent to the landlord's properties.
+
+router.get("/requests", auth(Role.LANDLORD), landlordController.getRentRequestOfLandlordProperties);
+
+// Approves or rejects a rental request.
+router.patch(
+  "/requests/:rentalReqId",
+  auth(Role.LANDLORD),
+  landlordController.updateRentalReqStatus,
+);
+
 export const landlordRoutes = router;
 
 /* 
-PUT	/api/landlord/properties/:id	Update property listing
 
-DELETE	/api/landlord/properties/:id	Remove property listing
+GET	/api/landlord/requests	LANDLORD	   
+	Gets all rental requests sent to the landlord's properties.
 
-GET	/api/landlord/requests	Get all rental requests for landlord's properties
-
-PATCH	/api/landlord/requests/:id	Approve or reject a rental request 
+PATCH	/api/landlord/requests/:id	LANDLORD (Owner)	
+{ status } (APPROVED or REJECTED)	Approves or rejects a rental request.
 
 */
