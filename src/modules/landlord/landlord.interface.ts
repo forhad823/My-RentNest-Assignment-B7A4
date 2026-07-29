@@ -10,3 +10,15 @@ export interface IPropertyPayload {
   amenities: string[];
   availabilityStatus?: PropertyAvailability;
 }
+
+export interface IUpdatePropertyPayload {
+  categoryId?: string;
+  title?: string;
+  location?: string;
+  price?: number;
+  bedroomCount?: number;
+  bathroomCount?: number;
+  amenities?: string[];
+  availabilityStatus?: PropertyAvailability;
+}
+
