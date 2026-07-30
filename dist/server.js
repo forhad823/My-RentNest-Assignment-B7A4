@@ -795,7 +795,11 @@ router2.delete(
   auth(Role.LANDLORD),
   landlordController.deleteProperty
 );
-router2.get("/requests", auth(Role.LANDLORD), landlordController.getRentRequestOfLandlordProperties);
+router2.get(
+  "/requests",
+  auth(Role.LANDLORD),
+  landlordController.getRentRequestOfLandlordProperties
+);
 router2.patch(
   "/requests/:rentalReqId",
   auth(Role.LANDLORD),

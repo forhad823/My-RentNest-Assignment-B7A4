@@ -342,7 +342,7 @@ The `createCheckoutSession` procedure initiates an online payment for an approve
    - Clears any previous stale `PENDING` payment entries for the request.
    - Creates a new `Payment` record with status `PENDING` and links the `stripeSessionId` inside a `prisma.$transaction` block.
 
----
+--- 
 
 ### 3. `handleStripeWebhook` in `payment.service.ts` (Stripe Webhook Challenge & Execution Path)
 
@@ -466,3 +466,4 @@ prisma/
 | `POST /api/payments/confirm` (webhook) | Write transaction      | Payment → `COMPLETED`, RentalRequest → `COMPLETED`, Property → `RENTED` are all committed together or all rolled back |
 
 ---
+ 

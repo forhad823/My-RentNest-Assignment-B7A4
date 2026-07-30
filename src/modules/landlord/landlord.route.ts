@@ -19,7 +19,7 @@ router.put(
   landlordController.updateProperty,
 );
 
-// update property feature
+// delete property feature
 router.delete(
   "/properties/:propertyId",
   auth(Role.LANDLORD),
@@ -28,7 +28,11 @@ router.delete(
 
 // Gets all rental requests sent to the landlord's properties.
 
-router.get("/requests", auth(Role.LANDLORD), landlordController.getRentRequestOfLandlordProperties);
+router.get(
+  "/requests",
+  auth(Role.LANDLORD),
+  landlordController.getRentRequestOfLandlordProperties,
+);
 
 // Approves or rejects a rental request.
 router.patch(
