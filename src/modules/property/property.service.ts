@@ -7,7 +7,7 @@ const getAllProperties = async (query: Record<string, any>) => {
     location,
     minPrice,
     maxPrice,
-    categoryId,
+    categoryId,            
     amenities,
     bedroomCount,
     bathroomCount,

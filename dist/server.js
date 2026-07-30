@@ -1425,6 +1425,232 @@ router6.get("/properties", auth(Role.ADMIN), adminController.getAllProperties);
 router6.get("/rentals", auth(Role.ADMIN), adminController.getAllRentalReq);
 var adminRoutes = router6;
 
+// src/modules/category/category.route.ts
+import { Router as Router7 } from "express";
+
+// src/modules/category/category.controller.ts
+import httpStatus8 from "http-status";
+
+// src/modules/category/category.services.ts
+var getAllPropertyCategories = async () => {
+  return await prisma.category.findMany({
+    select: {
+      name: true
+    },
+    orderBy: {
+      name: "asc"
+    }
+  });
+};
+var categoryService = {
+  getAllPropertyCategories
+};
+
+// src/modules/category/category.controller.ts
+var getAllPropertyCategories2 = catchAsync(
+  async (req, res) => {
+    const result = await categoryService.getAllPropertyCategories();
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus8.OK,
+      message: "All Categories Retrieved Successfully",
+      data: result
+    });
+  }
+);
+var categoryController = {
+  getAllPropertyCategories: getAllPropertyCategories2
+};
+
+// src/modules/category/category.route.ts
+var router7 = Router7();
+router7.get("/", categoryController.getAllPropertyCategories);
+var categoryRoutes = router7;
+
+// src/modules/property/property.route.ts
+import { Router as Router8 } from "express";
+
+// src/modules/property/property.controller.ts
+import httpStatus9 from "http-status";
+
+// src/modules/property/property.service.ts
+var getAllProperties3 = async (query) => {
+  const {
+    searchTerm,
+    location,
+    minPrice,
+    maxPrice,
+    categoryId,
+    amenities,
+    bedroomCount,
+    bathroomCount,
+    availabilityStatus,
+    page = 1,
+    limit = 10,
+    sortBy = "createdAt",
+    sortOrder = "desc"
+  } = query;
+  const pageNum = Number(page) > 0 ? Number(page) : 1;
+  const limitNum = Number(limit) > 0 ? Number(limit) : 10;
+  const skip = (pageNum - 1) * limitNum;
+  const whereConditions = {};
+  if (searchTerm) {
+    whereConditions.OR = [
+      { title: { contains: searchTerm, mode: "insensitive" } },
+      { location: { contains: searchTerm, mode: "insensitive" } }
+    ];
+  }
+  if (location) {
+    whereConditions.location = {
+      contains: location,
+      mode: "insensitive"
+    };
+  }
+  if (categoryId) {
+    whereConditions.categoryId = categoryId;
+  }
+  if (bedroomCount) {
+    whereConditions.bedroomCount = Number(bedroomCount);
+  }
+  if (bathroomCount) {
+    whereConditions.bathroomCount = Number(bathroomCount);
+  }
+  if (availabilityStatus) {
+    whereConditions.availabilityStatus = availabilityStatus;
+  }
+  if (minPrice || maxPrice) {
+    whereConditions.price = {};
+    if (minPrice) whereConditions.price.gte = Number(minPrice);
+    if (maxPrice) whereConditions.price.lte = Number(maxPrice);
+  }
+  if (amenities) {
+    let amenityList = [];
+    if (typeof amenities === "string") {
+      amenityList = amenities.split(",").map((item) => item.trim()).filter(Boolean);
+    } else if (Array.isArray(amenities)) {
+      amenityList = amenities.map((item) => String(item).trim()).filter(Boolean);
+    }
+    if (amenityList.length > 0) {
+      whereConditions.amenities = { hasSome: amenityList };
+    }
+  }
+  const [data, total] = await prisma.$transaction([
+    prisma.property.findMany({
+      where: whereConditions,
+      include: {
+        category: true,
+        landlord: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true
+          }
+        },
+        _count: {
+          select: {
+            reviews: true
+          }
+        }
+      },
+      skip,
+      take: limitNum,
+      orderBy: {
+        [sortBy]: sortOrder === "asc" ? "asc" : "desc"
+      }
+    }),
+    prisma.property.count({
+      where: whereConditions
+    })
+  ]);
+  return {
+    meta: {
+      page: pageNum,
+      limit: limitNum,
+      total
+    },
+    data
+  };
+};
+var getPropertyById = async (id) => {
+  const property = await prisma.property.findUnique({
+    where: { id },
+    include: {
+      category: true,
+      landlord: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true
+        }
+      },
+      reviews: {
+        include: {
+          tenant: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          }
+        },
+        orderBy: {
+          createdAt: "desc"
+        }
+      }
+    }
+  });
+  if (!property) {
+    throw new Error("Property not found");
+  }
+  const totalReviews = property.reviews.length;
+  const averageRating = totalReviews > 0 ? Number(
+    (property.reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews).toFixed(1)
+  ) : 0;
+  return {
+    ...property,
+    averageRating,
+    totalReviews
+  };
+};
+var propertyService = {
+  getAllProperties: getAllProperties3,
+  getPropertyById
+};
+
+// src/modules/property/property.controller.ts
+var getAllProperties4 = catchAsync(async (req, res) => {
+  const result = await propertyService.getAllProperties(req.query);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus9.OK,
+    message: "Properties retrieved successfully",
+    meta: result.meta,
+    data: result.data
+  });
+});
+var getPropertyById2 = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await propertyService.getPropertyById(id);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus9.OK,
+    message: "Property details retrieved successfully",
+    data: result
+  });
+});
+var propertyController = {
+  getAllProperties: getAllProperties4,
+  getPropertyById: getPropertyById2
+};
+
+// src/modules/property/property.route.ts
+var router8 = Router8();
+router8.get("/", propertyController.getAllProperties);
+router8.get("/:id", propertyController.getPropertyById);
+var propertyRoutes = router8;
+
 // src/app.ts
 var app = express();
 app.use(
@@ -1446,6 +1672,8 @@ app.use("/api/rentals", rentalsRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/properties", propertyRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 var app_default = app;
