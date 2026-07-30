@@ -2,7 +2,6 @@ node_modules
 generated
 .env
 /generated/prisma
-agy
 my-rentnest-project-requirement.md
 plan.md
 note.txt

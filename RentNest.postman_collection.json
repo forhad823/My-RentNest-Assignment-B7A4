@@ -1,0 +1,747 @@
+{
+  "info": {
+    "_postman_id": "cb46a5bb-9585-432f-8813-729c10773cda",
+    "name": "RentNest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53938729",
+    "_collection_link": "https://go.postman.co/collection/53938729-cb46a5bb-9585-432f-8813-729c10773cda?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\":\"admin@rent.com\",\r\n  \"password\": \"12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/auth/login",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login Tenant",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\":\"tenant-1@rent.com\",\r\n  \"password\": \"12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/auth/login",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login landlord",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\":\"lord-2@rent.com\",\r\n  \"password\": \"12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/auth/login",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\":\"tenant-4\",\r\n  \"email\":\"tenant-4@rent.com\",\r\n  \"password\":\"12345\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/auth/register",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Current User",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\" : \"test-2@gmail.com\",\r\n    \"password\": \"12345\"\r\n}"
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/auth/me",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "LandLord",
+      "item": [
+        {
+          "name": "add new property",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"categoryId\": \"cat-002\",\r\n  \"title\": \"test-2 Student Studio Apartment\",\r\n  \"location\": \"Chittagong\",\r\n  \"price\": 12000,\r\n  \"bedroomCount\": 1,\r\n  \"bathroomCount\": 1,\r\n  \"amenities\": [\"WiFi\", \"Study Desk\", \"Laundry\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/landlord/properties",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "properties"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Property",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bedroomCount\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/landlord/properties/82548bd0-b983-442e-838a-384b9b5031ac",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "properties",
+                "82548bd0-b983-442e-838a-384b9b5031ac"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Property",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/landlord/properties/82548bd0-b983-442e-838a-384b9b5031ac",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "properties",
+                "82548bd0-b983-442e-838a-384b9b5031ac"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all Rent Request to a landlord",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\":\"tenant-1@rent.com\",\r\n  \"password\": \"12345\"\r\n}"
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/landlord/requests",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update RentRequest Status by landlord",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"APPROVED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/landlord/requests/11d00111-bda2-47ea-89f8-942dc5727398",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "landlord",
+                "requests",
+                "11d00111-bda2-47ea-89f8-942dc5727398"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Rental Request",
+      "item": [
+        {
+          "name": "Submit rental request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"propertyId\":\"7e121ac8-9d66-4f26-a300-3691940c8265\",\r\n\"rentAmount\": 350\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/rentals/",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "rentals",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get rental requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/rentals",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "rentals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Rental Req detailed info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/rentals/4b84bd67-b443-4244-b5e4-9c1c8d5976a8",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "rentals",
+                "4b84bd67-b443-4244-b5e4-9c1c8d5976a8"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "create checkout session",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"rentalRequestId\":\"55309583-0745-4fda-9454-66b3786fe743\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/payments/create",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get payment history",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\":\"tenant-3@rent.com\",\r\n  \"password\": \"12345\"\r\n}"
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/payments",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "payments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get single payment by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/payments/77448258-93a1-42fc-8c5a-4b8395b9eb4c",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "77448258-93a1-42fc-8c5a-4b8395b9eb4c"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Review",
+      "item": [
+        {
+          "name": "Submit Review by tenant",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"rating\": 5,\r\n    \"comment\": \"very nice\",\r\n    \"propertyId\": \"7e121ac8-9d66-4f26-a300-3691940c8265\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/reviews",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get All Properties",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/admin/properties",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "properties"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/admin/users",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"activeStatus\": \"BLOCKED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/admin/users/01c18f78-ed45-4317-b5c0-e746e2b553ef",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "01c18f78-ed45-4317-b5c0-e746e2b553ef"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all Rental Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/admin/rentals",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "rentals"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Get all Category of Property",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/categories",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Property",
+      "item": [
+        {
+          "name": "Get All Properties",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/properties?location=Chittagong&price=12000&bedroomCount=1",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "properties"
+              ],
+              "query": [
+                {
+                  "key": "location",
+                  "value": "Chittagong"
+                },
+                {
+                  "key": "price",
+                  "value": "12000"
+                },
+                {
+                  "key": "bedroomCount",
+                  "value": "1"
+                },
+                {
+                  "key": "amenities",
+                  "value": "[wifi]",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Property Details by Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://my-rent-nest.vercel.app/api/properties/f5251b91-f92c-46df-9578-a8cbfb5c43fc",
+              "protocol": "https",
+              "host": [
+                "my-rent-nest",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "properties",
+                "f5251b91-f92c-46df-9578-a8cbfb5c43fc"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "root",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://my-rent-nest.vercel.app",
+          "protocol": "https",
+          "host": [
+            "my-rent-nest",
+            "vercel",
+            "app"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
